@@ -60,4 +60,13 @@ router.delete('/delete_book', (req, res) => {
     })
 });
 
+//get user's reviews
+router.get('/reviews', (req, res) => {
+   const ownerId = req.query.ownerId;
+   Book.find({ownerId}).exec((err, reviewedBooks) => {
+       if (err) return res.status(404).send(err);
+       res.send(reviewedBooks);
+   })
+});
+
 module.exports = router;

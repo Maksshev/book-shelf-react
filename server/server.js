@@ -20,6 +20,7 @@ mongoose
     .catch(e => console.log(e.stack));
 //express
 const app = express();
+//middleware
 app.use(bodyParser.json());
 app.use(cookieParser());
 

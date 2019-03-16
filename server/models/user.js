@@ -20,12 +20,17 @@ const userSchema = mongoose.Schema({
         type: String,
         maxlength: 100
     },
+    lastName: {
+        type: String,
+        maxlength: 100
+    },
     role: {
         type: Number,
         default: 0
     },
     token: {
-        type: String
+        type: String,
+        default: null
     }
 });
 
@@ -57,7 +62,39 @@ userSchema.methods.comparePassword = function (candidatePassword, cb) {
         if (err) return cb(err);
         cb(null, isMatch);
     })
-}
+};
+
+
+userSchema.methods.generateToken = function (cb) {
+    const user = this;
+    const token = jwt.sign(user._id.toHexString(), config.SECRET);
+    user.token = token;
+    user.save((err, user) => {
+        if (err) return cb(err);
+        cb(null, user);
+    })
+};
+
+
+userSchema.methods.deleteToken = function(cb) {
+    const user = this;
+
+    User.findOneAndUpdate({_id: user._id}, {token: null}, {returnNewDocument: false}, (err, user) => {
+        if (err) return cb(err);
+        cb(null, {tokenDeleted: true});
+    })
+};
+
+
+userSchema.statics.findByToken = function (token, cb) {
+    const user = this;
+    jwt.verify(token, config.SECRET, (err, decode) => {
+        user.findOne({_id: decode, token}, {password: 0}, (err, user) => {
+            if (err) return cb(err);
+            cb(null, user);
+        })
+    })
+};
 
 
 const User = mongoose.model('User', userSchema);
