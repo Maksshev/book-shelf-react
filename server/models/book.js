@@ -26,7 +26,12 @@ const bookSchema = mongoose.Schema({
     ownerId: {
         type: String,
         required: true
+    },
+    pages: {
+        type: String,
+        required: true
     }
+
 }, {
     timestamps: true
 });
