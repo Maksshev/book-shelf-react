@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {getBooks} from "../actions/actions";
+import {getBooks} from "../actions/bookActions";
 import BookItem from "../widgets/book_item";
 
 class HomeContainer extends Component {

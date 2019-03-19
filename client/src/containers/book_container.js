@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {getBookWithReviewer, clearBookWithReviewer} from "../actions/actions";
+import {getBookWithReviewer, clearBookWithReviewer} from "../actions/bookActions";
 
 class BookContainer extends Component {
 
