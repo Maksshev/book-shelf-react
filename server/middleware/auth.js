@@ -4,7 +4,7 @@ const auth = (req, res, next) => {
     const token  = req.cookies.token;
     User.findByToken(token, (err, user) => {
         if (err || !user) return res.json({
-            error: true
+            isAuth: false
         });
 
         req.token = token;

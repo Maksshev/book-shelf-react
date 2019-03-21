@@ -10,6 +10,11 @@ export default function (state = {}, action) {
                 ...state,
                 login: action.payload
             };
+        case 'CHECK_USER_AUTH_STATUS':
+            return {
+                ...state,
+                user: action.payload
+            };
         default:
             return state;
     }

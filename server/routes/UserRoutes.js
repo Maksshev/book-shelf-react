@@ -83,9 +83,10 @@ router.get('/logout', auth, (req, res) => {
 //check auth
 
 router.get('/auth', auth, (req, res) => {
-   res.json({
-       isAuth: true
-   })
+    res.json({
+        isAuth: true,
+        user: req.user
+    })
 });
 
 

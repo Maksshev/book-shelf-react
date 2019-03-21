@@ -8,10 +8,21 @@ export async function logUser({email, password}) {
     }
 }
 
+export async function checkAuthStatus() {
+    const isAuthRequest = await axios.get('/api/users/auth');
+    return {
+        type: 'CHECK_USER_AUTH_STATUS',
+        payload: {...isAuthRequest.data}
+    }
+}
+
 export function clearLogInState() {
     return {
         type: 'CLEAR_USER_LOGIN',
         payload: null
     }
 }
+
+
+
 
