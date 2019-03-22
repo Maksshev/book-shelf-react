@@ -66,8 +66,6 @@ class HomeContainer extends Component {
 
     render() {
 
-        const className = this.state.loading? "loader" : "loadmore";
-
         return (
             <div>
                 {this.renderBooks(this.props.books)}
