@@ -10,7 +10,8 @@ class LoginContainer extends Component {
         email: '',
         password: '',
         success: false,
-        error: ''
+        error: '',
+        loading: false,
     };
 
     handleInputEmail = (e) => {
@@ -27,24 +28,41 @@ class LoginContainer extends Component {
 
     submitForm = (e) => {
         e.preventDefault();
+        this.setState({
+            loading: true
+        });
         this.props.dispatch(logUser(this.state));
     };
 
+
     static getDerivedStateFromProps(nextProps) {
-        if (nextProps.login && nextProps.login.isAuth) {
-            //todo: delete dispatch later on in order to redirect to user on isAuth: true
+        if (nextProps.login && typeof nextProps.login.isAuth === 'boolean') {
+
+            if (nextProps.login.isAuth) {
+                nextProps.history.push('/');
+                return null;
+            }
+
+            const error = nextProps.login.message;
             nextProps.dispatch(clearLogInState());
-            nextProps.history.push('/user');
-            return null;
+            return {
+                loading: false,
+                error
+            }
         }
         return null;
     }
 
+
     render() {
 
-        const user = this.props;
+        return this.state.loading ?
 
-        return (
+            <div className="loader">Loading...</div>
+
+            :
+
+            (
             <div className="rl_container">
                 <form onSubmit={this.submitForm}>
                     <h2>Log in</h2>
@@ -67,8 +85,8 @@ class LoginContainer extends Component {
                     </button>
                     <div className="error">
                         {
-                            user.login ?
-                                <div>{user.login.message}</div>
+                            this.state.error ?
+                                <div>{this.state.error}</div>
                                 :
                                 null
                         }
@@ -81,7 +99,7 @@ class LoginContainer extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        login: state.userReducer.login
+        login: state.userReducer.login,
     }
 };
 

@@ -3,9 +3,9 @@ import React from 'react';
 const Admin = (props) => {
 
     const user = props.user;
-    const name = user && user.user ? user.user.name : null;
-    const lastName = user && user.user ? user.user.lastName : null;
-    const email = user && user.user ? user.user.email : null;
+    const name = user.name;
+    const lastName = user.lastName;
+    const email = user.email;
 
     return (
         <div className="user_container">

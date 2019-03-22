@@ -15,6 +15,15 @@ export async function getBooks(
     }
 }
 
+export function clearBooks() {
+    return {
+        type: 'CLEAR_BOOKS',
+        payload: null
+    }
+}
+
+
+
 
 export async function getBookWithReviewer(id) {
     const bookDataReq = await axios.get(`/api/books/book?id=${id}`);
