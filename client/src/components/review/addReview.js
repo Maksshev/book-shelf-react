@@ -13,7 +13,10 @@ class AddReview extends Component {
             pages: '',
             rating: '1',
             price: ''
-        }
+        },
+        loading: false,
+        showPostStatus: false,
+        postStatus: false
     };
 
     handleInput = (e, type) => {
@@ -26,13 +29,16 @@ class AddReview extends Component {
 
     submitForm = (e) => {
         e.preventDefault();
+        this.setState({
+            loading: true,
+        });
         this.props.dispatch(addBookReview({...this.state.formData, ownerId: this.props.user._id}));
     };
 
-    showNewBook = (book) => (
-        book.post ?
+    showNewBook = () => (
+        this.state.newBook.post ?
             <div className="conf_link">
-                Review added: <Link to={`/books/${book.bookId}`}>Click here to go to the review</Link>
+                Review added: <Link to={`/books/${this.state.newBook.bookId}`}>Click here to go to the review</Link>
             </div>
             :
             <div className="error">
@@ -40,8 +46,27 @@ class AddReview extends Component {
             </div>
     );
 
+    renderSubmitButton = () => (
+        this.state.loading ?
+            <div className="lds-circle"><div></div></div> :
+            <button type="submit">Add review</button>
+    );
+
     componentWillUnmount() {
         this.props.dispatch(clearAddBookState())
+    }
+
+    static getDerivedStateFromProps(nextProps) {
+        if (nextProps.newBook) {
+            const newBook = nextProps.newBook;
+            nextProps.dispatch(clearAddBookState());
+            return {
+                showPostStatus: true,
+                newBook,
+                loading: false
+            };
+        }
+        return null;
     }
 
     render() {
@@ -95,10 +120,10 @@ class AddReview extends Component {
                                onChange={e => this.handleInput(e, 'price')}
                         />
                     </div>
-                    <button type="submit">Add review</button>
+                    {this.renderSubmitButton()}
                 </form>
                 {
-                    this.props.newBook ?
+                    this.state.showPostStatus ?
                         this.showNewBook(this.props.newBook) :
                         null
                 }
