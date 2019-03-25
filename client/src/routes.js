@@ -8,6 +8,7 @@ import auth from './hoc/auth';
 import Admin from "./components/admin/admin";
 import {asyncComponent} from 'react-async-component';
 import authService from './services/authService';
+import AddReview from "./components/review/addReview";
 
 
 const component = async (props, Component, redirect, type) => {
@@ -38,7 +39,7 @@ const component = async (props, Component, redirect, type) => {
 //todo: add error component
 
 const ManagedRoute = ({component: Component, redirect: redirect, type: type, ...rest}) => (
-    <Route {...rest} component={asyncComponent({
+    <Route {...rest} exact component={asyncComponent({
         resolve: () => component(null, Component, redirect, type),
         LoadingComponent: () => <div className="loader">Loading...</div>
     })}/>
@@ -51,8 +52,9 @@ const Routes = () => {
             <Switch>
                 <Route path="/" exact component={Home}/>
                 <ManagedRoute path="/login" exact component={Login} type="login" redirect="/"/>
-                <Route path="/books/:id" exact component={auth(BookView)}/>
+                <Route path="/books/:id" exact component={BookView}/>
                 <ManagedRoute path="/user" exact component={Admin} type="user" redirect="/login"/>
+                <ManagedRoute path="/user/add" exact component={AddReview} type="user" redirect="/login"/>
             </Switch>
         </Layout>
     );

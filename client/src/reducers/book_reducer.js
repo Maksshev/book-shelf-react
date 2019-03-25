@@ -8,6 +8,10 @@ export default function (state = {}, action) {
             return {...state, ...action.payload};
         case 'CLEAR_BOOK_WITH_REVIEWER':
             return {...state, ...action.payload};
+        case 'ADD_BOOK_REVIEW':
+            return {...state, newBook: action.payload};
+        case 'CLEAR_ADD_BOOK_STATE':
+            return {...state, newBook: action.payload};
         default:
             return {...state};
     }

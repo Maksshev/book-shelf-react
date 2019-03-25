@@ -9,7 +9,7 @@ class HomeContainer extends Component {
         loading: true,
         booksLength: 0,
         showLoadMore: true,
-        updateCounter: 0
+        updateState: false
     };
 
     componentDidMount() {
@@ -19,7 +19,7 @@ class HomeContainer extends Component {
 
     componentWillUnmount() {
         this.props.dispatch(clearBooks());
-        this.setState({updateCounter: 0})
+        this.setState({updateState: false})
     }
 
 
@@ -43,7 +43,7 @@ class HomeContainer extends Component {
             return {
                 loading: false,
                 booksLength: nextProps.books.length,
-                updateCounter: ++prevState.updateCounter
+                updateState: !prevState.updateState
             }
         }
 
@@ -52,28 +52,27 @@ class HomeContainer extends Component {
             return null;
         }
 
-        if (nextProps.books.length <= prevState.booksLength && prevState.updateCounter % 2 === 0) {
+        if (nextProps.books.length <= prevState.booksLength && prevState.updateState % 2 === 0) {
             return {
                 showLoadMore: false
             }
         }
 
         return {
-            updateCounter: ++prevState.updateCounter
+            updateState: !prevState.updateState
         };
     }
 
 
     render() {
-
         return (
             <div>
                 {this.renderBooks(this.props.books)}
                 <div
-                    className={this.state.showLoadMore ? (this.state.loading ? "loader" : "loadmore") : "hide-load-more"}
+                    className={this.state.showLoadMore ? (this.state.loading ? "lds-circle" : "loadmore") : "hide-load-more"}
                     onClick={this.state.loading ? null : this.loadMore}
                 >
-                    Load more
+                    <div>{this.state.loading ? null : 'Load more'}</div>
                 </div>
             </div>
         )

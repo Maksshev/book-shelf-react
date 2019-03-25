@@ -50,3 +50,31 @@ export function clearBookWithReviewer() {
         }
     }
 }
+
+
+export async function addBookReview(bookData) {
+    let result;
+
+    try {
+        const reviewAddReq = await axios.post('/api/books/book', bookData);
+        result = reviewAddReq.data;
+    } catch (e) {
+        result = {
+            post: false
+        }
+    }
+
+    return {
+        type: 'ADD_BOOK_REVIEW',
+        payload: {
+            ...result
+        }
+    }
+}
+
+export function clearAddBookState() {
+    return {
+        type: 'CLEAR_ADD_BOOK_STATE',
+        payload: null
+    }
+}

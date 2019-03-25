@@ -4,9 +4,23 @@ import {getBookWithReviewer, clearBookWithReviewer} from "../actions/bookActions
 
 class BookContainer extends Component {
 
+    state = {
+        loading: true
+    };
+
 
     componentDidMount() {
         this.props.dispatch(getBookWithReviewer(this.props.id));
+    }
+
+
+    static getDerivedStateFromProps(nextProps) {
+        if (nextProps.book && nextProps.reviewer) {
+            return {
+                loading: false
+            }
+        }
+        return null;
     }
 
 
@@ -64,8 +78,8 @@ class BookContainer extends Component {
 
 
         return (
-            <div>
-                {this.renderBook(book, reviewer)}
+            <div className={this.state.loading ? "lds-circle" : null}>
+                {this.state.loading ? <div></div> : this.renderBook(book, reviewer)}
             </div>
         )
     }

@@ -8,6 +8,7 @@ export default function () {
     };
 
 
+
     return {
         checkAuth: checkAuth
     }
