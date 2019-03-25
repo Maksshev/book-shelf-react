@@ -24,5 +24,14 @@ export function clearLogInState() {
 }
 
 
+export async function getBooksByReviewer(ownerId) {
+    const reviewsRequest = await axios.get(`/api/books/reviews`, {params: {ownerId}});
+    return {
+        type: 'GET_REVIEWS_BY_USER',
+        payload: reviewsRequest.data
+    }
+}
+
+
 
 

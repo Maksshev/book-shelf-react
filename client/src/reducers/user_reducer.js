@@ -15,6 +15,11 @@ export default function (state = {}, action) {
                 ...state,
                 user: action.payload
             };
+        case 'GET_REVIEWS_BY_USER':
+            return {
+                ...state,
+                posts: action.payload
+            };
         default:
             return state;
     }

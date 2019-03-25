@@ -475,3 +475,8 @@ header .navItem span {
 .hide-load-more {
     display: none;
 }
+
+.link_to-review {
+    color: #00BCD4!important;
+    cursor: pointer;
+}
