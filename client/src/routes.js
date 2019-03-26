@@ -11,6 +11,7 @@ import authService from './services/authService';
 import AddReview from "./components/review/addReview";
 import UserPosts from "./components/admin/userPosts";
 import EditPost from './components/admin/editPost';
+import RegisterUser from './components/admin/register';
 
 
 const component = async (props, Component, redirect, type) => {
@@ -59,6 +60,7 @@ const Routes = () => {
                 <ManagedRoute path="/user/add" exact component={AddReview} type="user" redirect="/login"/>
                 <ManagedRoute path="/user/user-reviews" exact component={UserPosts} type="user" redirect="login"/>
                 <ManagedRoute path="/user/edit-post/:id" exact component={EditPost} type="user" redirect="login"/>
+                <ManagedRoute path="/user/register" exact component={RegisterUser} type="user" redirect="login"/>
             </Switch>
         </Layout>
     );

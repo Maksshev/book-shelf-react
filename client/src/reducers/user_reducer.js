@@ -20,6 +20,24 @@ export default function (state = {}, action) {
                 ...state,
                 posts: action.payload
             };
+        case 'GET_USERS':
+            return {
+                ...state,
+                users: action.payload
+            };
+        case 'REGISTER_USER':
+            return {
+                ...state,
+                users: action.payload.users,
+                success: action.payload.success,
+                error: action.payload.error
+            };
+        case 'CLEAR_SUCCESS_STATE':
+            return {
+                ...state,
+                success: action.payload.success,
+                error: action.payload.error
+            };
         default:
             return state;
     }

@@ -32,6 +32,41 @@ export async function getBooksByReviewer(ownerId) {
     }
 }
 
+export async function getUsers() {
+    const usersRequest = await axios.get('/api/users');
+    return {
+        type: 'GET_USERS',
+        payload: usersRequest.data
+    }
+}
+
+
+export async function registerUser(userData, usersList) {
+    try {
+        const registerRequest = await axios.post('/api/users/register', userData);
+        const addedUserData = registerRequest.data;
+        return {
+            type: 'REGISTER_USER',
+            payload: {users: [...usersList, addedUserData.addedUser], success: addedUserData.success}
+        }
+    } catch (e) {
+        return {
+            type: 'REGISTER_USER',
+            payload: {users: [...usersList], success: false, error: 'Something went wrong, try again'}
+        }
+    }
+}
+
+export function clearSuccessState() {
+    return {
+        type: 'CLEAR_SUCCESS_STATE',
+        payload: {
+            success: undefined,
+            error: undefined
+        }
+    }
+}
+
 
 
 

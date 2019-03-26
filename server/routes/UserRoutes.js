@@ -62,7 +62,7 @@ router.get('/getReviewer', (req, res) => {
 //get reviewers
 
 router.get('/', (req, res) => {
-   User.find({}, (err, users) => {
+   User.find({}, {password: false, token: false}, (err, users) => {
       if (err) return res.status(400).send(err);
       res.status(200).send(users);
    })
