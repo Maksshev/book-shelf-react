@@ -78,3 +78,54 @@ export function clearAddBookState() {
         payload: null
     }
 }
+
+export async function getReview(id) {
+    const reviewRequest = await axios.get(`/api/books/book?id=${id}`);
+
+    return {
+        type: 'GET_REVIEW_BY_ID',
+        payload: {
+            ...reviewRequest.data
+        }
+    }
+}
+
+export function clearReview() {
+    return {
+        type: 'CLEAR_REVIEW',
+        payload: null
+    }
+}
+
+export async function updateBook(bookData) {
+    const updateReq = await axios.post('/api/books/book_update', bookData);
+    return {
+        type: 'UPDATE_BOOK',
+        payload: {
+            ...updateReq.data
+        }
+    }
+}
+
+export function clearUpdatedBook() {
+    return {
+        type: 'CLEAR_UPDATED_BOOK',
+        payload: null
+    }
+}
+
+
+export async function deleteReview(id) {
+    const delRequest = await axios.delete(`/api/books/delete_book?id=${id}`);
+    return {
+        type: 'DELETE_BOOK',
+        payload: delRequest.data.deleted
+    }
+}
+
+export function clearDeleteStatus() {
+    return {
+        type: 'CLEAR_DELETE_STATUS',
+        payload: null
+    }
+}

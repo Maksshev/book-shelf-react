@@ -16,7 +16,7 @@ const BookItem = (book) => {
                         <strong>Price</strong> {book.price}
                     </div>
                     <div className="book_bubble">
-                        <strong>Pages</strong> {book.price}
+                        <strong>Pages</strong> {book.pages}
                     </div>
                     <div className="book_bubble rating">
                         <strong>Rating</strong> {book.rating}

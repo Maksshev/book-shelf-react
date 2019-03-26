@@ -52,7 +52,7 @@ class BookContainer extends Component {
                 <div className="br_box">
                     <div className="left">
                         <div>
-                            <span>Pages:</span> {book.price}
+                            <span>Pages:</span> {book.pages}
                         </div>
                         <div>
                             <span>Price: </span> {book.price}

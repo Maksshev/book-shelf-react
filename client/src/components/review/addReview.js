@@ -70,7 +70,7 @@ class AddReview extends Component {
     }
 
     render() {
-        const formData = this.state;
+        const formData = this.state.formData;
         console.log(this.props);
 
         return (

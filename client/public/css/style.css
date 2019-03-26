@@ -480,3 +480,7 @@ header .navItem span {
     color: #00BCD4!important;
     cursor: pointer;
 }
+
+.invisible {
+    visibility: hidden;
+}
