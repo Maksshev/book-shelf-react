@@ -5,16 +5,15 @@ import {Provider} from 'react-redux';
 import {createStore, applyMiddleware} from 'redux';
 import promiseMiddleware from 'redux-promise';
 import ReduxThunk from 'redux-thunk';
-import {composeWithDevTools} from 'redux-devtools-extension';
+// import {composeWithDevTools} from 'redux-devtools-extension';
 import rootReducer from './reducers/root_reducer';
 import Routes from './routes';
 
 
 const middleware = [promiseMiddleware, ReduxThunk];
 
-const store = createStore(rootReducer, composeWithDevTools(
-    applyMiddleware(...middleware)
-));
+const store = createStore(rootReducer,
+    applyMiddleware(...middleware));
 
 ReactDOM.render(
     <Provider store={store}>
