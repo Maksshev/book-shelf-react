@@ -2,7 +2,8 @@ import React from 'react';
 import  {Link} from 'react-router-dom';
 import FontAwesome from 'react-fontawesome';
 
-const SidenavItems = () => {
+const SidenavItems = (props) => {
+
 
     const items = [
         {
@@ -17,42 +18,43 @@ const SidenavItems = () => {
             icon: 'address-book',
             text: 'My Profile',
             link: '/user',
-            restricted: false
+            restricted: true
         },
         {
             type: 'navItem',
             icon: 'address-card',
             text: 'Add Admins',
             link: '/user/register',
-            restricted: false
+            restricted: true
         },
         {
             type: 'navItem',
             icon: 'sign-in',
             text: 'Login',
             link: '/login',
-            restricted: false
+            restricted: false,
+            excluded: true
         },
         {
             type: 'navItem',
             icon: 'edit',
             text: 'My reviews',
             link: '/user/user-reviews',
-            restricted: false
+            restricted: true
         },
         {
             type: 'navItem',
             icon: 'file-text-o',
             text: 'Add reviews',
             link: '/user/add',
-            restricted: false
+            restricted: true
         },
         {
             type: 'navItem',
             icon: 'sign-out',
             text: 'Logout',
             link: '/user/logout',
-            restricted: false
+            restricted: true
         },
     ];
 
@@ -67,7 +69,17 @@ const SidenavItems = () => {
 
     const showItems = () => (
         items.map((e, i) => {
-            return element(e, i);
+            if (props.isAuth) {
+                if (!e.excluded) {
+                    return element(e, i);
+                }
+                return null;
+            } else {
+                if (!e.restricted) {
+                    return element(e, i);
+                }
+                return null;
+            }
         })
     );
 

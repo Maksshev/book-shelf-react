@@ -71,7 +71,6 @@ class AddReview extends Component {
 
     render() {
         const formData = this.state.formData;
-        console.log(this.props);
 
         return (
             <div className="rl_container article">

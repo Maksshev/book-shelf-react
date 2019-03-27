@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import FontAwesome from 'react-fontawesome';
 import {Link} from 'react-router-dom';
 import Nav from './sidenav';
+import {connect} from 'react-redux';
 
 class Header extends Component {
 
@@ -33,6 +34,7 @@ class Header extends Component {
                 <Nav
                     showNav={this.state.showNav}
                     onHideNav={() => this.onHideNav()}
+                    login={this.props.login}
                 />
 
                 <Link to="/" className="logo">
@@ -43,4 +45,10 @@ class Header extends Component {
     }
 }
 
-export default Header;
+const mapStateToProps = (state, ownProps) => {
+    return {
+        login: state.userReducer.login
+    }
+};
+
+export default connect(mapStateToProps)(Header);

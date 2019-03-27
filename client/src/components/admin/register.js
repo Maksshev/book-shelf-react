@@ -68,7 +68,6 @@ class RegisterUser extends Component {
         this.setState({
             loading: true
         });
-        console.log(this.state.formData);
         this.props.dispatch(clearSuccessState());
         this.props.dispatch(registerUser(this.state.formData, this.props.users));
     };
@@ -89,7 +88,7 @@ class RegisterUser extends Component {
 
         const users = this.props.users;
 
-        console.log(this.state.formData)
+
 
         return (
 
