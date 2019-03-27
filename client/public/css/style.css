@@ -24,6 +24,7 @@ header {
     padding-top: 5px;
     background: #00BCD4;
     position: relative;
+    z-index: 1000;
 }
 
 header .logo {
@@ -447,6 +448,7 @@ header .navItem span {
     justify-content: center;
     position: relative;
     z-index: -100;
+    transform: translate3d(0, 0, 0);
 }
 .lds-circle > div {
     display: block;

@@ -35,6 +35,7 @@ class Header extends Component {
                     showNav={this.state.showNav}
                     onHideNav={() => this.onHideNav()}
                     login={this.props.login}
+                    click={() => this.setState({showNav: false})}
                 />
 
                 <Link to="/" className="logo">

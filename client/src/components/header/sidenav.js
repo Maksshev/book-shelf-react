@@ -15,7 +15,7 @@ const Nav = (props) => {
 
     const CheckedSideNav = asyncComponent({
         resolve: () => sidenavCheckAuth(),
-        LoadingComponent: () => <SidenavItems isAuth={!!props.login}/>
+        LoadingComponent: () => <SidenavItems onClick={props.click} isAuth={!!props.login}/>
     });
 
 
@@ -27,7 +27,7 @@ const Nav = (props) => {
                 position: 'relative',
                 background: '#242424',
                 maxWidth: '220px',
-                zIndex: '1000'
+                zIndex: '1000',
             }}
         >
             <CheckedSideNav/>
