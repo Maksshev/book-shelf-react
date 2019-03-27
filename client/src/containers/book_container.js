@@ -55,7 +55,7 @@ class BookContainer extends Component {
                             <span>Pages:</span> {book.pages}
                         </div>
                         <div>
-                            <span>Price: </span> {book.price}
+                            <span>Price: </span> {'$' + book.price}
                         </div>
                     </div>
                     <div className="right">
