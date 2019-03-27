@@ -24,8 +24,10 @@ const Nav = (props) => {
             showNav={props.showNav}
             onHideNav={props.onHideNav}
             navStyle={{
+                position: 'relative',
                 background: '#242424',
-                maxWidth: '220px'
+                maxWidth: '220px',
+                zIndex: '1000'
             }}
         >
             <CheckedSideNav/>
