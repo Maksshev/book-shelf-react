@@ -454,6 +454,8 @@ header .navItem span {
     border-radius: 50%;
     background: #00BCD4;
     animation: lds-circle 2.4s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+    position: relative;
+    z-index: -100;
 }
 @keyframes lds-circle {
     0%, 100% {
