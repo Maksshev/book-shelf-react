@@ -23,6 +23,7 @@ const app = express();
 //middleware
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(express.static('client/build'));
 
 
 
@@ -31,6 +32,12 @@ app.use('/api/books', bookRoutes);
 app.use('/api/users', userRoutes);
 
 
+if (process.env.NODE_ENV === 'production') {
+    const path = require('path');
+    app.get('/*', (req, res) => {
+        res.sendfile(path.resolve(__dirname, '../client', 'build', 'index.html'))
+    })
+}
 
 
 const PORT = process.env.PORT || 3002;
