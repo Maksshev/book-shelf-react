@@ -445,6 +445,8 @@ header .navItem span {
     width: 100%;
     transform: translateZ(1px);
     justify-content: center;
+    position: relative;
+    z-index: -100;
 }
 .lds-circle > div {
     display: block;
