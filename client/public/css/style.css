@@ -117,10 +117,6 @@ header .navItem span {
     cursor: pointer;
 }
 
-/*=============================
-            REGISTER
-===============================*/
-
 .rl_container {
     text-align: center;
 }
@@ -217,22 +213,19 @@ header .navItem span {
     display: inline-block;
 }
 
-::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+::-webkit-input-placeholder {
     color: #d8d8d8;
   }
-  ::-moz-placeholder { /* Firefox 19+ */
+  ::-moz-placeholder {
     color: #d8d8d8;
   }
-  :-ms-input-placeholder { /* IE 10+ */
+  :-ms-input-placeholder {
     color: #d8d8d8;
   }
-  :-moz-placeholder { /* Firefox 18- */
+  :-moz-placeholder {
     color: #d8d8d8;
   }
 
-/*=============================
-            USER
-===============================*/
     .user_posts {
         padding:10px;
         box-sizing: border-box;
@@ -281,9 +274,7 @@ header .navItem span {
     color: #02bcd4;
   }
 
-/*=============================
-            POST
-===============================*/
+
 
 .br_container {
     box-sizing: border-box;
@@ -367,9 +358,6 @@ header .navItem span {
     padding-top: 31px;
 }
 
-/*=============================
-            LOADER
-===============================*/
 
 
 .loader,
