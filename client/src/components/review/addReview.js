@@ -2,37 +2,25 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {addBookReview, clearAddBookState} from "../../actions/bookActions";
+import {initReviewAddingValues} from "../forms/init-values-config";
+import {reviewValidation} from "../forms/validation-config";
+import {ValidationFail} from "../forms/error-message";
+import {Formik, Form, Field, ErrorMessage} from 'formik';
+import FormField from "../forms/form-field";
 
 class AddReview extends Component {
 
     state ={
-        formData: {
-            name: '',
-            author: '',
-            review: '',
-            pages: '',
-            rating: '1',
-            price: ''
-        },
         loading: false,
         showPostStatus: false,
         postStatus: false
     };
 
-    handleInput = (e, type) => {
-        let newFormData = {...this.state.formData};
-        newFormData[type] = e.target.value;
-        this.setState({
-            formData: newFormData
-        })
-    };
-
-    submitForm = (e) => {
-        e.preventDefault();
+    submitForm = (values) => {
         this.setState({
             loading: true,
         });
-        this.props.dispatch(addBookReview({...this.state.formData, ownerId: this.props.user._id}));
+        this.props.dispatch(addBookReview({...values, ownerId: this.props.user._id}));
     };
 
     showNewBook = () => (
@@ -70,62 +58,56 @@ class AddReview extends Component {
     }
 
     render() {
-        const formData = this.state.formData;
 
         return (
             <div className="rl_container article">
-                <form onSubmit={this.submitForm}>
-                    <h2>Add review</h2>
-                    <div className="form_element">
-                        <input type="text"
-                               placeholder="Enter name"
-                               value={formData.name}
-                               onChange={e => this.handleInput(e, 'name')}
-                        />
-                    </div>
-                    <div className="form_element">
-                        <input type="text"
-                               placeholder="Enter author"
-                               value={formData.author}
-                               onChange={e => this.handleInput(e, 'author')}
-                        />
-                    </div>
-                    <textarea
-                        value={formData.review}
-                        onChange={e => this.handleInput(e, 'review')}
-                    />
-                    <div className="form_element">
-                        <input type="number"
-                               placeholder="Enter number of pages"
-                               value={formData.pages}
-                               onChange={e => this.handleInput(e, 'pages')}
-                        />
-                    </div>
-                    <div className="form_element">
-                        <select value={formData.rating}
-                                onChange={e => this.handleInput(e, 'rating')}
-                        >
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                        </select>
-                    </div>
-                    <div className="form_element">
-                        <input type="number"
-                               placeholder="Enter price"
-                               value={formData.price}
-                               onChange={e => this.handleInput(e, 'price')}
-                        />
-                    </div>
-                    {this.renderSubmitButton()}
-                </form>
+
+                <Formik
+                    initialValues={initReviewAddingValues}
+                    onSubmit={this.submitForm}
+                    validationSchema={reviewValidation}
+                >
+                    <Form>
+                        <h2>Add review</h2>
+                        <Field name="name" type="text" placeholder="Enter book name" component={FormField}/>
+                        <ErrorMessage name="name" render={ValidationFail}/>
+                        <Field name="author" type="text" placeholder="Enter author's name" component={FormField}/>
+                        <ErrorMessage name="author" render={ValidationFail}/>
+                        <Field name="review" placeholder="Write book review here" component={(props) => (
+                            <textarea {...props.field} placeholder={props.placeholder}/>
+                        )}/>
+                        <ErrorMessage name="review" render={ValidationFail}/>
+                        <Field name="pages" type="number" placeholder="Enter number of pages" component={FormField}/>
+                        <ErrorMessage name="pages" render={ValidationFail}/>
+                        <Field name="rating" component={(props) => (
+                            <div className="form_element">
+                                <select
+                                    {...props.field}
+                                >
+                                    <option value="">Choose rating</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </div>
+                        )}/>
+                        <ErrorMessage name="rating" render={ValidationFail}/>
+                        <Field name="price" type="number" placeholder="Enter book's price" component={FormField}/>
+                        <ErrorMessage name="price" render={ValidationFail}/>
+                        {this.renderSubmitButton()}
+                    </Form>
+                </Formik>
+
                 {
                     this.state.showPostStatus ?
                         this.showNewBook(this.props.newBook) :
-                        null
+                        <div className="conf_link invisible">
+                            Review added: Click here to go to the review
+                        </div>
                 }
+
             </div>
         )
     }
