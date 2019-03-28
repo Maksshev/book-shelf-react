@@ -1,6 +1,10 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {getUsers, registerUser, clearSuccessState} from "../../actions/userActions";
+import {registerValidation} from "../forms/validation-config";
+import {Formik, Form, Field, ErrorMessage} from 'formik';
+import FormField from "../forms/form-field";
+import {ValidationFail} from "../forms/error-message";
 
 
 class RegisterUser extends Component {
@@ -10,7 +14,8 @@ class RegisterUser extends Component {
             name: '',
             lastName: '',
             email: '',
-            password: ''
+            password: '',
+            confirmPassword: ''
         },
         error: '',
         loading: false,
@@ -55,21 +60,12 @@ class RegisterUser extends Component {
     }
 
 
-    handleInput = (e, type) => {
-        let newFormData = {...this.state.formData};
-        newFormData[type] = e.target.value;
-        this.setState({
-            formData: newFormData
-        })
-    };
-
-    submitForm = e => {
-        e.preventDefault();
+    submitForm = values => {
         this.setState({
             loading: true
         });
         this.props.dispatch(clearSuccessState());
-        this.props.dispatch(registerUser(this.state.formData, this.props.users));
+        this.props.dispatch(registerUser({name: values.name, lastName: values.lastName, email: values.email, password: values.password}, this.props.users));
     };
 
 
@@ -99,45 +95,39 @@ class RegisterUser extends Component {
                     <div className="edit_confirm">
                         User added!
                     </div>
+
                     :
 
                     null
                 }
-                <form onSubmit={this.submitForm}>
-                    <h2>Add user</h2>
-                    <div className="form_element">
-                        <input type="text"
-                               placeholder="Enter name"
-                               value={this.state.formData.name}
-                               onChange={(e) => this.handleInput(e, "name")}
-                        />
-                    </div>
-                    <div className="form_element">
-                        <input type="text"
-                               placeholder="Enter last name"
-                               value={this.state.formData.lastName}
-                               onChange={(e) => this.handleInput(e, "lastName")}
-                        />
-                    </div>
-                    <div className="form_element">
-                        <input type="email"
-                               placeholder="Enter email"
-                               value={this.state.formData.email}
-                               onChange={(e) => this.handleInput(e, "email")}
-                        />
-                    </div>
-                    <div className="form_element">
-                        <input type="password"
-                               placeholder="Enter password"
-                               value={this.state.formData.password}
-                               onChange={(e) => this.handleInput(e, "password")}
-                        />
-                    </div>
-                    {this.state.loading? <div className="lds-circle"><div></div></div> : <button type="submit">Add user</button>}
-                    <div className="error">
+
+                <Formik
+                    initialValues={this.state.formData}
+                    onSubmit={this.submitForm}
+                    validationSchema={registerValidation}
+                >
+
+                    <Form>
+                        <h2>Add user</h2>
+                        <Field name="name" type="text" placeholder="Enter name" component={FormField}/>
+                        <ErrorMessage name="name" render={ValidationFail}/>
+                        <Field name="lastName" type="text" placeholder="Enter last name" component={FormField}/>
+                        <ErrorMessage name="lastName" render={ValidationFail}/>
+                        <Field name="email" type="text" placeholder="Enter email" component={FormField}/>
+                        <ErrorMessage name="email" render={ValidationFail}/>
+                        <Field name="password" type="password" placeholder="Enter password" component={FormField}/>
+                        <ErrorMessage name="password" render={ValidationFail}/>
+                        <Field name="confirmPassword" type="password" placeholder="Confirm password" component={FormField}/>
+                        <ErrorMessage name="confirmPassword" render={ValidationFail}/>
+                        {this.state.loading? <div className="lds-circle"><div></div></div> : <button type="submit">Add user</button>}
+                        <div className="error">
                         {this.state.error}
-                    </div>
-                </form>
+                        </div>
+                    </Form>
+
+                </Formik>
+
+
                 <div className="current_users">
                     <h4>
                         Current users:

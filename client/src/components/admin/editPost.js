@@ -9,6 +9,11 @@ import {
     deleteReview,
     clearDeleteStatus
 } from "../../actions/bookActions";
+import {reviewValidation} from "../forms/validation-config";
+import {ValidationFail} from "../forms/error-message";
+import {Formik, Form, Field, ErrorMessage} from 'formik';
+import FormField from "../forms/form-field";
+
 
 class EditPost extends Component {
 
@@ -19,23 +24,15 @@ class EditPost extends Component {
         isDeleted: false
     };
 
-    handleInput = (e, type) => {
-        let newFormData = {...this.state.formData};
-        newFormData[type] = e.target.value;
-        this.setState({
-            formData: newFormData
-        })
-    };
 
-    submitForm = (e) => {
-        e.preventDefault();
+    submitForm = (values) => {
         this.setState({
             isUpdating: true,
             showPostStatus: false
         });
         this.props.dispatch(clearUpdatedBook());
         this.props.dispatch(clearReview());
-        this.props.dispatch(updateBook(this.state.formData));
+        this.props.dispatch(updateBook(values));
     };
 
     showUpdatedReview = () => (
@@ -135,54 +132,44 @@ class EditPost extends Component {
                 <div className="rl_container article">
                     {this.state.showPostStatus ? this.showUpdatedReview() : null}
                     {this.state.isDeleted ? this.showDeletedStatus() : null}
-                    <form onSubmit={this.submitForm}>
-                        <h2>Edit review</h2>
-                        <div className="form_element">
-                            <input type="text"
-                                   placeholder="Enter name"
-                                   value={formData.name}
-                                   onChange={e => this.handleInput(e, 'name')}
-                            />
-                        </div>
-                        <div className="form_element">
-                            <input type="text"
-                                   placeholder="Enter author"
-                                   value={formData.author}
-                                   onChange={e => this.handleInput(e, 'author')}
-                            />
-                        </div>
-                        <textarea
-                            value={formData.review}
-                            onChange={e => this.handleInput(e, 'review')}
-                        />
-                        <div className="form_element">
-                            <input type="number"
-                                   placeholder="Enter number of pages"
-                                   value={formData.pages}
-                                   onChange={e => this.handleInput(e, 'pages')}
-                            />
-                        </div>
-                        <div className="form_element">
-                            <select value={formData.rating}
-                                    onChange={e => this.handleInput(e, 'rating')}
-                            >
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                            </select>
-                        </div>
-                        <div className="form_element">
-                            <input type="number"
-                                   placeholder="Enter price"
-                                   value={formData.price}
-                                   onChange={e => this.handleInput(e, 'price')}
-                            />
-                        </div>
-                        {this.renderSubmitButton()}
-                        {this.renderDeleteButton()}
-                    </form>
+                    <Formik
+                        initialValues={this.state.formData}
+                        onSubmit={this.submitForm}
+                        validationSchema={reviewValidation}
+                    >
+                        <Form>
+                            <h2>Edit review</h2>
+                            <Field name="name" type="text" placeholder="Enter book name" component={FormField}/>
+                            <ErrorMessage name="name" render={ValidationFail}/>
+                            <Field name="author" type="text" placeholder="Enter author's name" component={FormField}/>
+                            <ErrorMessage name="author" render={ValidationFail}/>
+                            <Field name="review" placeholder="Write book review here" component={(props) => (
+                                <textarea {...props.field} placeholder={props.placeholder}/>
+                            )}/>
+                            <ErrorMessage name="review" render={ValidationFail}/>
+                            <Field name="pages" type="number" placeholder="Enter number of pages" component={FormField}/>
+                            <ErrorMessage name="pages" render={ValidationFail}/>
+                            <Field name="rating" component={(props) => (
+                                <div className="form_element">
+                                    <select
+                                        {...props.field}
+                                    >
+                                        <option value="">Choose rating</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </div>
+                            )}/>
+                            <ErrorMessage name="rating" render={ValidationFail}/>
+                            <Field name="price" type="number" placeholder="Enter book's price" component={FormField}/>
+                            <ErrorMessage name="price" render={ValidationFail}/>
+                            {this.renderSubmitButton()}
+                            {this.renderDeleteButton()}
+                        </Form>
+                    </Formik>
                 </div>
             )
             :
