@@ -3,35 +3,25 @@ import {connect} from 'react-redux';
 import {logUser} from "../actions/userActions";
 import {withRouter} from 'react-router-dom';
 import {clearLogInState} from "../actions/userActions";
+import FormField from "../components/forms/form-field";
+import {initLoginValues} from "../components/forms/init-values-config";
+import {loginValidation} from "../components/forms/validation-config";
+import {ValidationFail} from "../components/forms/error-message";
+import {Formik, Form, Field, ErrorMessage} from 'formik';
 
 class LoginContainer extends Component {
 
     state = {
-        email: '',
-        password: '',
-        success: false,
         error: '',
         loading: false,
     };
 
-    handleInputEmail = (e) => {
-        this.setState({
-            email: e.target.value
-        })
-    };
 
-    handleInputPassword = (e) => {
-        this.setState({
-            password: e.target.value
-        })
-    };
-
-    submitForm = (e) => {
-        e.preventDefault();
+    submitForm = (values) => {
         this.setState({
             loading: true
         });
-        this.props.dispatch(logUser(this.state));
+        this.props.dispatch(logUser(values));
     };
 
 
@@ -63,37 +53,34 @@ class LoginContainer extends Component {
             :
 
             (
-            <div className="rl_container">
-                <form onSubmit={this.submitForm}>
-                    <h2>Log in</h2>
-                    <div className="form_element">
-                        <input
-                            type="email"
-                            placeholder="Enter your email"
-                            onChange={this.handleInputEmail}
-                        />
-                    </div>
-                    <div className="form_element">
-                        <input
-                            type="password"
-                            placeholder="Enter your password"
-                            onChange={this.handleInputPassword}
-                        />
-                    </div>
-                    <button type="submit">
-                        Log in
-                    </button>
-                    <div className="error">
-                        {
+                <div className="rl_container">
+
+                    <Formik
+                        initialValues={initLoginValues}
+                        onSubmit={this.submitForm}
+                        validationSchema={loginValidation}
+                    >
+                        <Form>
+                            <h2>Log in</h2>
+                            <Field name="email" type="text" placeholder="Enter your email" component={FormField}/>
+                            <ErrorMessage name="email" render={ValidationFail}/>
+                            <Field name="password" type="password" placeholder="Enter your password" component={FormField}/>
+                            <ErrorMessage name="password" render={ValidationFail}/>
+                            <button type="submit">
+                            Log in
+                            </button>
+                            <div className="error">
+                            {
                             this.state.error ?
-                                <div>{this.state.error}</div>
-                                :
-                                null
-                        }
-                    </div>
-                </form>
-            </div>
-        )
+                            <div>{this.state.error}</div>
+                            :
+                            null
+                            }
+                            </div>
+                        </Form>
+                    </Formik>
+                </div>
+            )
     }
 }
 
