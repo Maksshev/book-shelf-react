@@ -27,7 +27,7 @@ router.get('/', (req, res) => {
 
 //add book
 router.post('/book', (req, res) => {
-    const book = new Book(req.body);
+    const book = new Book({...req.body, search: req.body.name.split('').join(' ')});
     book.save((err, doc) => {
         if (err) return res.status(401).send(err);
         res.status(200).json({
@@ -62,11 +62,28 @@ router.delete('/delete_book', (req, res) => {
 
 //get user's reviews
 router.get('/reviews', (req, res) => {
-   const ownerId = req.query.ownerId;
-   Book.find({ownerId}).exec((err, reviewedBooks) => {
-       if (err) return res.status(404).send(err);
-       res.send(reviewedBooks);
-   })
+    const ownerId = req.query.ownerId;
+    Book.find({ownerId}).exec((err, reviewedBooks) => {
+        if (err) return res.status(404).send(err);
+        res.send(reviewedBooks);
+    })
+});
+
+
+//search
+router.get('/search', (req, res) => {
+    const searchReq = req.query.search.split('').join(' ');
+    Book.find({
+        $text: {$search: `${searchReq}`}
+    }, {
+        score: {$meta: "textScore"}
+    })
+        .sort({ score : { $meta : 'textScore' } })
+        .exec((err, searchedBooks) => {
+            if (err) return res.status(404).send(err);
+            res.send(searchedBooks)
+        })
+
 });
 
 module.exports = router;

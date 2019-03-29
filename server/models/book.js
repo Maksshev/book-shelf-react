@@ -30,6 +30,10 @@ const bookSchema = mongoose.Schema({
     pages: {
         type: String,
         required: true
+    },
+    search: {
+        type: String,
+        required: true
     }
 
 }, {
@@ -37,8 +41,11 @@ const bookSchema = mongoose.Schema({
 });
 
 
+bookSchema.index({search: 'text'});
 
 
-const Book = mongoose.model('Book', bookSchema)
 
-module.exports = Book
+const Book = mongoose.model('Book', bookSchema);
+
+
+module.exports = Book;
