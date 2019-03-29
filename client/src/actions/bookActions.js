@@ -129,3 +129,11 @@ export function clearDeleteStatus() {
         payload: null
     }
 }
+
+export async function searchBooks(searchQuery, currentlyDisplayedBooks = []) {
+    const searchRequest = await axios.get(`/api/books/search?search=${searchQuery}`);
+    return {
+        type: 'SEARCH_BOOKS',
+        payload: [...currentlyDisplayedBooks, ...searchRequest.data]
+    }
+}

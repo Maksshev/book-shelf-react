@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import FontAwesome from 'react-fontawesome';
-import {Link} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import Nav from './sidenav';
 import {connect} from 'react-redux';
 
@@ -17,6 +17,8 @@ class Header extends Component {
     };
 
     render() {
+
+
         return (
             <header>
                 <div className="open_nav">
@@ -41,6 +43,9 @@ class Header extends Component {
                 <Link to="/" className="logo">
                     The Book Shelf
                 </Link>
+
+
+
             </header>
         )
     }

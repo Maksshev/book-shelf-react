@@ -41,6 +41,38 @@ header .open_nav {
     left:0px;
 }
 
+.search {
+    position: absolute;
+    right: 16px;
+    z-index: 1001;
+    top: 15px;
+}
+
+.search-form {
+    width: 100%;
+    height: 0;
+    transition: 0.5s ease;
+    overflow: hidden;
+    background: white;
+    position: relative;
+}
+
+.search-form-open {
+    height: 50px;
+}
+
+.search-input {
+    width: 100%;
+    height: 100%;
+    padding-left: 40px;
+}
+
+.close-search {
+    position: absolute;
+    right: 17px;
+    top: 14px;
+}
+
 
 header .navItem {
     font-weight: 300;
