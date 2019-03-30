@@ -9,7 +9,13 @@ export const initReviewAddingValues = {
     review: '',
     pages: '',
     rating: '',
-    price: ''
+    price: '',
+    image: '',
+    imageString: ''
+};
+
+export const initImageValue = {
+    image: ''
 };
 
 

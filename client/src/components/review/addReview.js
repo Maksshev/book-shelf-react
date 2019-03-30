@@ -7,14 +7,17 @@ import {reviewValidation} from "../forms/validation-config";
 import {ValidationFail} from "../forms/error-message";
 import {Formik, Form, Field, ErrorMessage} from 'formik';
 import FormField from "../forms/form-field";
+import axios from 'axios';
 
 class AddReview extends Component {
 
-    state ={
+    state = {
         loading: false,
         showPostStatus: false,
-        postStatus: false
-    };
+        postStatus: false,
+        SUPPORTED_FORMATS: ['image/jpg', 'image/jpeg', 'image/png']
+
+};
 
     submitForm = (values) => {
         this.setState({
@@ -36,7 +39,9 @@ class AddReview extends Component {
 
     renderSubmitButton = () => (
         this.state.loading ?
-            <div className="lds-circle"><div></div></div> :
+            <div className="lds-circle">
+                <div></div>
+            </div> :
             <button type="submit">Add review</button>
     );
 
@@ -57,6 +62,7 @@ class AddReview extends Component {
         return null;
     }
 
+
     render() {
 
         return (
@@ -67,37 +73,88 @@ class AddReview extends Component {
                     onSubmit={this.submitForm}
                     validationSchema={reviewValidation}
                 >
-                    <Form>
-                        <h2>Add review</h2>
-                        <Field name="name" type="text" placeholder="Enter book name" component={FormField}/>
-                        <ErrorMessage name="name" render={ValidationFail}/>
-                        <Field name="author" type="text" placeholder="Enter author's name" component={FormField}/>
-                        <ErrorMessage name="author" render={ValidationFail}/>
-                        <Field name="review" placeholder="Write book review here" component={(props) => (
-                            <textarea {...props.field} placeholder={props.placeholder}/>
-                        )}/>
-                        <ErrorMessage name="review" render={ValidationFail}/>
-                        <Field name="pages" type="number" placeholder="Enter number of pages" component={FormField}/>
-                        <ErrorMessage name="pages" render={ValidationFail}/>
-                        <Field name="rating" component={(props) => (
-                            <div className="form_element">
-                                <select
-                                    {...props.field}
-                                >
-                                    <option value="">Choose rating</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                </select>
-                            </div>
-                        )}/>
-                        <ErrorMessage name="rating" render={ValidationFail}/>
-                        <Field name="price" type="number" placeholder="Enter book's price" component={FormField}/>
-                        <ErrorMessage name="price" render={ValidationFail}/>
-                        {this.renderSubmitButton()}
-                    </Form>
+
+
+
+                             <Form>
+                                <h2>Add review</h2>
+                                <Field name="name" type="text" placeholder="Enter book name" component={FormField}/>
+                                <ErrorMessage name="name" render={ValidationFail}/>
+                                <Field name="author" type="text" placeholder="Enter author's name" component={FormField}/>
+                                <ErrorMessage name="author" render={ValidationFail}/>
+                                <Field name="review" placeholder="Write book review here" component={(props) => (
+                                    <textarea {...props.field} placeholder={props.placeholder}/>
+                                )}/>
+                                <ErrorMessage name="review" render={ValidationFail}/>
+                                <Field name="pages" type="number" placeholder="Enter number of pages" component={FormField}/>
+                                <ErrorMessage name="pages" render={ValidationFail}/>
+                                <Field name="rating" component={(props) => (
+                                    <div className="form_element">
+                                        <select
+                                            {...props.field}
+                                        >
+                                            <option value="">Choose rating</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                        </select>
+                                    </div>
+                                )}/>
+                                <ErrorMessage name="rating" render={ValidationFail}/>
+                                <Field name="image" placeholder="Upload book cover" component={(props) => {
+
+                                    return (
+
+                                        <React.Fragment>
+                                        <input type="file"
+                                               name="image"
+                                               onChange={(e) => {
+                                                   const file = e.currentTarget.files[0];
+                                                   props.form.setFieldValue('image', file, true);
+                                                   if (file && file.size < 100000 && this.state.SUPPORTED_FORMATS.includes(file.type)) {
+                                                       const formData = new FormData();
+                                                       formData.append('cover', file);
+                                                       axios({
+                                                           method: 'post',
+                                                           url: '/api/books/cover',
+                                                           data: formData,
+                                                           config: { headers: {'Content-Type': 'multipart/form-data' }}
+                                                       })
+                                                           .then(function (response) {
+                                                               //handle success
+                                                               console.log(response);
+                                                               props.form.setFieldValue('imageString', response.data);
+                                                           })
+                                                           .catch(function (response) {
+                                                               //handle error
+                                                               console.log(response);
+                                                           })
+                                                   } else {
+                                                       console.log('bad')
+                                                   }
+                                               }}
+                                               onBlur={(e) => {
+                                                   props.form.setFieldTouched('image', true, true)
+                                               }}
+                                        />
+
+                                            {props.form.values.imageString ? <img src={props.form.values.imageString} alt="error"/> : null }
+
+                                        </React.Fragment>
+                                    )
+                                }}/>
+                                <Field name="imageString" type="hidden"/>
+                                <ErrorMessage name="image" render={ValidationFail}>
+                                </ErrorMessage>
+                                <Field name="price" type="number" placeholder="Enter book's price" component={FormField}/>
+                                <ErrorMessage name="price" render={ValidationFail}/>
+                                {this.renderSubmitButton()}
+                                <ErrorMessage name="imageString" render={ValidationFail}/>
+                            </Form>
+
+
                 </Formik>
 
                 {

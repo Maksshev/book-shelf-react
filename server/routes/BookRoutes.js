@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const Book = require('../models/book');
+const multer = require('multer');
+const upload = multer();
+const imgProcess = require('../img-processing/image-processing');
 
 
 //get book
@@ -89,5 +92,14 @@ router.get('/search', (req, res) => {
         })
 
 });
+
+//book cover upload
+router.post('/cover', upload.array('cover'), (req, res) => {
+    imgProcess.convertImgs(req.files)
+        .then((imgStringArray) => {
+            res.json({image: imgStringArray[0]})
+        })
+});
+
 
 module.exports = router;
