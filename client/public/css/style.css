@@ -70,8 +70,17 @@ header .open_nav {
     border: none;
 }
 
+.search-input::placeholder {
+    color: white;
+    transition: 0.5s ease;
+}
+
 .search-input:focus {
     outline: none;
+}
+
+.search-form-open .search-input::placeholder {
+    color: #686868;
 }
 
 .close-search {
