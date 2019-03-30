@@ -13,11 +13,12 @@ class HomeContainer extends Component {
         updateState: false,
         showSearch: false,
         searchInput: '',
-        makeSearchReq: false
+        makeSearchReq: false,
+        isSearchResult: false
     };
 
     componentDidMount() {
-        this.props.dispatch(getBooks(10, 0, 'asc'));
+        this.props.dispatch(getBooks(3, 0, 'asc'));
     }
 
 
@@ -29,35 +30,59 @@ class HomeContainer extends Component {
 
     renderBooks = (books) => (
         books ?
-            books.map((book) => (
+
+            (
+                books.length > 0 ?
+
+                books.map((book) => (
                 <BookItem key={book._id} {...book}/>
             ))
+
+                :
+
+                <div className="not-found">Nothing was found</div>
+            )
+
+
             :
             null
     );
 
     loadMore = () => {
         const count = this.props.books.length;
-        this.props.dispatch(getBooks(10, count, 'asc', this.props.books));
+        this.props.dispatch(getBooks(3, count, 'asc', this.props.books));
         this.setState({loading: true});
     };
 
 
     showSearch = () => {
-        if (this.state.showSearch) this.props.dispatch(getBooks(10, 0, 'asc'));
+        if (this.state.showSearch) {
+            this.props.dispatch(clearBooks());
+            this.setState({
+                loading: true,
+                booksLength: 0,
+                showLoadMore: true,
+                updateState: false,
+                showSearch: false,
+                searchInput: '',
+                makeSearchReq: false,
+                isSearchResult: false
+            });
+            this.props.dispatch(getBooks(3, 0, 'asc'));
+        }
         this.setState({showSearch: !this.state.showSearch});
     };
 
     handleSearchInput = (e) => {
 
-        e.persist();
+        const value = e.target.value;
 
         if (this.state.searchTimeout) clearTimeout(this.state.searchTimeout);
 
         this.setState({
             loading: true,
-            searchInput: e.target.value,
-            searchTimeout: setTimeout(() => {if (e.target.value) this.props.dispatch(searchBooks(e.target.value))}, 700)
+            searchInput: value,
+            searchTimeout: setTimeout(() => {if (value) this.props.dispatch(searchBooks(value, 10, 0))}, 700)
     });
 
     };
@@ -77,7 +102,7 @@ class HomeContainer extends Component {
             return null;
         }
 
-        if (nextProps.books.length <= prevState.booksLength && prevState.updateState % 2 === 0) {
+        if (nextProps.books.length === prevState.booksLength && !prevState.updateState) {
             return {
                 showLoadMore: false
             }

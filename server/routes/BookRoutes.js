@@ -73,12 +73,16 @@ router.get('/reviews', (req, res) => {
 //search
 router.get('/search', (req, res) => {
     const searchReq = req.query.search.split('').join(' ');
+    const skip = req.query.skip ? parseInt(req.query.skip) : 0;
+    const limit = req.query.limit ? parseInt(req.query.limit) : 10;
     Book.find({
         $text: {$search: `${searchReq}`}
     }, {
         score: {$meta: "textScore"}
     })
+        .skip(skip)
         .sort({ score : { $meta : 'textScore' } })
+        .limit(limit)
         .exec((err, searchedBooks) => {
             if (err) return res.status(404).send(err);
             res.send(searchedBooks)
