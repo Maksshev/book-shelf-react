@@ -27,7 +27,7 @@ module.exports = {
                         .getBuffer(type.mime, (err, buffer) => {
                             //Transfer image file buffer to base64 string
                             let base64Image = buffer.toString('base64');
-                            let imgSrcString = "data:" + type.mime + ';base64, ' + base64Image;
+                            let imgSrcString = 'data:' + type.mime + ';base64,' + base64Image + '==';
                             //Resolve base94 string
                             resolve(imgSrcString);
                         });
