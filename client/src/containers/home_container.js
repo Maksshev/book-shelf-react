@@ -18,7 +18,7 @@ class HomeContainer extends Component {
     };
 
     componentDidMount() {
-        this.props.dispatch(getBooks(3, 0, 'asc'));
+        this.props.dispatch(getBooks(10, 0, 'asc'));
     }
 
 
@@ -50,7 +50,7 @@ class HomeContainer extends Component {
 
     loadMore = () => {
         const count = this.props.books.length;
-        this.props.dispatch(getBooks(3, count, 'asc', this.props.books));
+        this.props.dispatch(getBooks(10, count, 'asc', this.props.books));
         this.setState({loading: true});
     };
 
@@ -68,7 +68,7 @@ class HomeContainer extends Component {
                 makeSearchReq: false,
                 isSearchResult: false
             });
-            this.props.dispatch(getBooks(3, 0, 'asc'));
+            this.props.dispatch(getBooks(10, 0, 'asc'));
         }
         this.setState({showSearch: !this.state.showSearch});
     };
