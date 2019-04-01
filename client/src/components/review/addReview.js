@@ -169,8 +169,7 @@ class AddReview extends Component {
                             )
                         }}/>
                         <Field name="imageString" type="hidden"/>
-                        <ErrorMessage name="image" render={ValidationFail}>
-                        </ErrorMessage>
+                        <ErrorMessage name="image" render={ValidationFail}/>
                         <Field name="price" type="number" placeholder="Enter book's price" component={FormField}/>
                         <ErrorMessage name="price" render={ValidationFail}/>
                         {this.renderSubmitButton()}
