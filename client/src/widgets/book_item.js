@@ -22,6 +22,7 @@ const BookItem = (book) => {
                         <strong>Rating</strong> {book.rating}
                     </div>
                 </div>
+                {book.cover && <img className="book-cover-item" src={book.cover} alt="no cover"/>}
             </div>
         </Link>
     );

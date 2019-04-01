@@ -34,6 +34,10 @@ const bookSchema = mongoose.Schema({
     search: {
         type: String,
         required: true
+    },
+    cover: {
+        type: String,
+        required: true
     }
 
 }, {

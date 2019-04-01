@@ -202,7 +202,8 @@ header .navItem span {
     padding: 20px;
     box-sizing: border-box;
     margin-top: 20px;
-    font-size: 14px;
+    font-size: 20px;
+    font-family: 'Roboto', sans-serif;
 }
 .rl_container.article select {
     width: 80%;
@@ -534,4 +535,47 @@ header .navItem span {
     width: 100%;
     margin-top: 30px;
     text-align: center;
+}
+
+.book-cover {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 17px;
+}
+
+.rating-select {
+    color: #d8d8d8;
+}
+
+input[type="file"] {
+    color: #d8d8d8;
+    margin-top: 20px;
+}
+
+textarea::placeholder {
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+    padding-left: 10px;
+}
+
+.upload-btn-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+
+
+
+.upload-btn-wrapper input[type=file] {
+    font-size: 100px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+}
+
+.book-cover-item {
+    height: 175px;
+    width: 150px;
 }

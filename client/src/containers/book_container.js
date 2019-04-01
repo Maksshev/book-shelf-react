@@ -42,6 +42,7 @@ class BookContainer extends Component {
                     <h5>
                         {book.author}
                     </h5>
+                    {book.cover && <img className="book-cover-item" src={book.cover}/>}
                     <div className="br_reviewer">
                         <span>Review by:</span> {reviewer.name} {reviewer.lastName}
                     </div>
